@@ -3,11 +3,11 @@ from kubragen.consts import PROVIDER_GOOGLE, PROVIDERSVC_GOOGLE_GKE
 from kubragen.object import Object
 from kubragen.option import OptionRoot
 from kubragen.options import Options
-from kubragen.output import OutputProject, OD_FileTemplate
-from kubragen.outputimpl import OutputFile_ShellScript, OutputFile_Kubernetes, OutputDriver_Print
+from kubragen.output import OutputProject, OD_FileTemplate, OutputFile_ShellScript, OutputFile_Kubernetes, \
+    OutputDriver_Print
 from kubragen.provider import Provider
 
-from kg_rabbitmq import RabbitMQBuilder, RabbitMQOptions
+from kg_rabbitmq import RabbitMQBuilder, RabbitMQOptions, RabbitMQConfigFile, RabbitMQConfigFileOptions
 
 kg = KubraGen(provider=Provider(PROVIDER_GOOGLE, PROVIDERSVC_GOOGLE_GKE), options=Options({
     'namespaces': {
@@ -50,6 +50,11 @@ rabbit_config = RabbitMQBuilder(kubragen=kg, options=RabbitMQOptions({
     'basename': 'myrabbit',
     'config': {
         'erlang_cookie': 'my-secret-cookie',
+        'rabbitmq_conf': RabbitMQConfigFile(options=RabbitMQConfigFileOptions({
+            'enable': {
+                'cluster_formation': True,
+            }
+        }))
     },
     'kubernetes': {
         'volumes': {

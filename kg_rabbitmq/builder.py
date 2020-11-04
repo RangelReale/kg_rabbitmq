@@ -1,14 +1,18 @@
-from typing import List, Optional, Sequence, Any
+from typing import List, Optional
 
 from kubragen import KubraGen
 from kubragen.builder import Builder
+from kubragen.configfile import ConfigFile, ConfigFileRender, ConfigFileRenderMulti, ConfigFileRender_SysCtl, \
+    ConfigFileRender_RawStr
 from kubragen.data import ValueData
-from kubragen.exception import KGException, InvalidParamError, InvalidNameError
+from kubragen.exception import InvalidParamError, InvalidNameError
 from kubragen.helper import LiteralStr, QuotedStr
-from kubragen.kdata import IsKData, KData_Secret, KData
+from kubragen.kdata import IsKData
 from kubragen.kdatahelper import KDataHelper_Volume
 from kubragen.object import ObjectItem, Object
 from kubragen.types import TBuild, TBuildItem
+
+from .configfile import RabbitMQConfigFile
 from .option import RabbitMQOptions
 
 
@@ -88,6 +92,8 @@ class RabbitMQBuilder(Builder):
     """
 
     options: RabbitMQOptions
+    configfile: ConfigFile
+    configfilerender: ConfigFileRender
     _namespace: str
 
     SOURCE_NAME = 'kg_rabbitmq'
@@ -112,6 +118,13 @@ class RabbitMQBuilder(Builder):
         self.options = options
 
         self._namespace = self.option_get('namespace')
+        self.configfile = self.option_get('config.rabbitmq_conf')
+        if self.configfile is None:
+            self.configfile = RabbitMQConfigFile()
+        self.configfilerender = ConfigFileRenderMulti([
+            ConfigFileRender_SysCtl(),
+            ConfigFileRender_RawStr()
+        ])
 
         if self.option_get('config.authorization.serviceaccount_create') is not False:
             serviceaccount_name = self.basename()
@@ -249,7 +262,9 @@ class RabbitMQBuilder(Builder):
             },
             'data': {
                 'enabled_plugins': LiteralStr('[{}].'.format(', '.join(self.option_get('config.enabled_plugins')))),
-                'rabbitmq.conf': LiteralStr(self.file_rabbitmq_conf())
+                # 'rabbitmq.conf': LiteralStr(self.file_rabbitmq_conf())
+                # 'rabbitmq.conf': LiteralStr(self.configfile.get_value(self))
+                'rabbitmq.conf': LiteralStr(self.configfilerender.render(self.configfile.get_value(self))),
             }
         }, name=self.BUILDITEM_CONFIG, source=self.SOURCE_NAME, instance=self.basename())]
 
@@ -526,16 +541,3 @@ class RabbitMQBuilder(Builder):
             }
         }, name=self.BUILDITEM_SERVICE, source=self.SOURCE_NAME, instance=self.basename())])
         return ret
-
-    def file_rabbitmq_conf(self):
-        rabbitmq_conf = f'''log.console.level = {self.option_get('config.loglevel')}
-cluster_formation.peer_discovery_backend = k8s
-cluster_formation.k8s.host = kubernetes.default.svc.cluster.local
-cluster_formation.k8s.address_type = hostname
-cluster_formation.k8s.service_name = {self.object_name('service-headless')}
-queue_master_locator=min-masters'''
-        load_definitions = self.option_get('config.load_definitions')
-        if load_definitions is not None:
-            rabbitmq_conf += '\nload_definitions = /etc/rabbitmq-load-definition/load_definition.json'
-        return rabbitmq_conf
-

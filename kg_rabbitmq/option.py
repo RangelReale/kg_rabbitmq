@@ -1,6 +1,7 @@
 import uuid
 from typing import Sequence, Optional, Any
 
+from kubragen.configfile import ConfigFile
 from kubragen.kdata import KData_Secret
 from kubragen.kdatahelper import KDataHelper_Volume
 from kubragen.option import OptionDef, OptionDefFormat
@@ -30,10 +31,10 @@ class RabbitMQOptions(Options):
           - enabled plugins
           - Sequence
           - ```['rabbitmq_peer_discovery_k8s']```
-        * - config |rarr| rabbitmq_conf_extra
-          - append to rabbitmq.conf
-          - str
-          -
+        * - config |rarr| rabbitmq_conf
+          - rabbitmq.conf file
+          - :class:`kubragen.configfile.ConfigFile`
+          - :class:`kg_rabbitmq.RabbitMQConfigFile`
         * - config |rarr| erlang_cookie
           - erlang cookie
           - str, dict, :class:`KData_Secret`
@@ -98,7 +99,7 @@ class RabbitMQOptions(Options):
             'namespace': OptionDef(required=True, default_value='rabbitmq', allowed_types=[str]),
             'config': {
                 'enabled_plugins': OptionDef(default_value=['rabbitmq_peer_discovery_k8s'], allowed_types=[Sequence]),
-                'rabbitmq_conf_extra': OptionDef(allowed_types=[str]),
+                'rabbitmq_conf': OptionDef(allowed_types=[ConfigFile]),
                 'erlang_cookie': OptionDef(required=True, default_value=str(uuid.uuid4()),
                                            format=OptionDefFormat.KDATA_VOLUME,
                                            allowed_types=[str, dict, KData_Secret]),

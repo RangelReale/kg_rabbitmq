@@ -4,10 +4,16 @@ from .builder import (
 from .option import (
     RabbitMQOptions
 )
+from .configfile import (
+    RabbitMQConfigFileOptions,
+    RabbitMQConfigFile,
+)
 
 __version__ = "0.7.2"
 
 __all__ = [
     'RabbitMQOptions',
     'RabbitMQBuilder',
+    'RabbitMQConfigFileOptions',
+    'RabbitMQConfigFile',
 ]
