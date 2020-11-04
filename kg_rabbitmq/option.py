@@ -12,32 +12,80 @@ class RabbitMQOptions(Options):
     Options for the RabbitMQ builder.
 
     .. list-table::
-       :header-rows: 1
+        :header-rows: 1
 
-       * - option
-         - description
-         - allowed types
-         - default value
-       * - basename
-         - object names prefix
-         - str
-         - ```rabbitmq```
-       * - namespace
-         - namespace
-         - str
-         - ```rabbitmq```
-       * - config.enabled_plugins
-         - enabled plugins
-         - Sequence
-         - ```['rabbitmq_peer_discovery_k8s']```
-       * - config.rabbitmq_conf_extra
-         - append to rabbitmq.conf
-         - str
-         -
-       * - config.erlang_cookie
-         - erlang cookie
-         - str, dict, :class:`KData_Secret`
-         - ```uuid.uuid4()```
+        * - option
+          - description
+          - allowed types
+          - default value
+        * - basename
+          - object names prefix
+          - str
+          - ```rabbitmq```
+        * - namespace
+          - namespace
+          - str
+          - ```rabbitmq```
+        * - config |rarr| enabled_plugins
+          - enabled plugins
+          - Sequence
+          - ```['rabbitmq_peer_discovery_k8s']```
+        * - config |rarr| rabbitmq_conf_extra
+          - append to rabbitmq.conf
+          - str
+          -
+        * - config |rarr| erlang_cookie
+          - erlang cookie
+          - str, dict, :class:`KData_Secret`
+          - ```uuid.uuid4()```
+        * - config |rarr| loglevel
+          - server log level
+          - str
+          - ```info```
+        * - config |rarr| enable_prometheus
+          - enable prometheus
+          - bool
+          - ```True```
+        * - config |rarr| prometheus_annotation
+          - add prometheus annotations
+          - bool
+          - ```False```
+        * - config |rarr| load_definitions
+          - load RabbitMQ definitions
+          - bool, :class:`KData_Secret`
+          -
+        * - config |rarr| authorization |rarr| serviceaccount_create
+          - whether to create a service account
+          - bool
+          - ```True```
+        * - config |rarr| authorization |rarr| serviceaccount_use
+          - service account to use if not creating
+          - str
+          -
+        * - config |rarr| authorization |rarr| roles_create
+          - whether create roles
+          - bool
+          - ```True```
+        * - config |rarr| authorization |rarr| roles_bind
+          - whether to bind roles to service account
+          - bool
+          - ```True```
+        * - container |rarr| busybox
+          - busybox container image
+          - str
+          - ```busybox:<version>```
+        * - container |rarr| rabbitmq
+          - rabbitmq container image
+          - str
+          - ```rabbitmq:<version>```
+        * - kubernetes |rarr| volumes |rarr| data
+          - Kubernetes data volume
+          - dict, :class:`KData_Value`, :class:`KData_ConfigMap`, :class:`KData_Secret`
+          -
+        * - kubernetes |rarr| resources |rarr| statefulset
+          - Kubernetes StatefulSet resources
+          - dict
+          -
     """
     def define_options(self) -> Optional[Any]:
         """

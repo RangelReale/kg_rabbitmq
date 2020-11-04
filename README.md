@@ -1,12 +1,12 @@
-# Kubragen Builder: RabbitMQ
+# KubraGen Builder: RabbitMQ
 
 [![PyPI version](https://img.shields.io/pypi/v/kg_rabbitmq.svg)](https://pypi.python.org/pypi/kg_rabbitmq/)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/kg_rabbitmq.svg)](https://pypi.python.org/pypi/kg_rabbitmq/)
 
-kg_rabbitmq is a builder for [Kubragen](https://github.com/RangelReale/kubragen) that deploys 
+kg_rabbitmq is a builder for [KubraGen](https://github.com/RangelReale/kubragen) that deploys 
 a [RabbitMQ](https://www.rabbitmq.com/) server in Kubernetes.
 
-[Kubragen](https://github.com/RangelReale/kubragen) is a Kubernetes YAML generator library that makes it possible to generate
+[KubraGen](https://github.com/RangelReale/kubragen) is a Kubernetes YAML generator library that makes it possible to generate
 configurations using the full power of the Python programming language.
 
 ## Example

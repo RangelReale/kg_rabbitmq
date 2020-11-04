@@ -13,6 +13,80 @@ from .option import RabbitMQOptions
 
 
 class RabbitMQBuilder(Builder):
+    """
+    RabbitMQ builder.
+
+    Based on `rabbitmq/diy-kubernetes-examples <https://github.com/rabbitmq/diy-kubernetes-examples>`_.
+
+    .. list-table::
+        :header-rows: 1
+
+        * - build
+          - description
+        * - BUILD_ACCESSCONTROL
+          - creates service account, roles, and roles bindings
+        * - BUILD_CONFIG
+          - creates ConfigMap
+        * - BUILD_SERVICE
+          - creates StatefulSet and Services
+
+    .. list-table::
+        :header-rows: 1
+
+        * - build item
+          - description
+        * - BUILDITEM_SERVICE_ACCOUNT
+          - ServiceAccount
+        * - BUILDITEM_ROLE
+          - Role
+        * - BUILDITEM_ROLE_BINDING
+          - RoleBinding
+        * - BUILDITEM_CONFIG
+          - ConfigMap
+        * - BUILDITEM_CONFIG_SECRET
+          - Secret
+        * - BUILDITEM_SERVICE_HEADLESS
+          - Service (headless, internal, needed for RabbitMQ)
+        * - BUILDITEM_STATEFULSET
+          - StatefulSet
+        * - BUILDITEM_SERVICE
+          - Service (for application use)
+
+    .. list-table::
+        :header-rows: 1
+
+        * - object name
+          - description
+          - default value
+        * - config
+          - ConfigMap
+          - ```<basename>-config```
+        * - config-secret
+          - Secret
+          - ```<basename>-config-secret```
+        * - service-headless
+          - Service (headless)
+          - ```<basename>-headless```
+        * - service
+          - Service
+          - ```<basename>```
+        * - service-account
+          - ServiceAccount
+          - ```<basename>```
+        * - role
+          - Role
+          - ```<basename>```
+        * - role-binding
+          - RoleBinding
+          - ```<basename>```
+        * - statefulset
+          - StatefulSet
+          - ```<basename>```
+        * - pod-label-all
+          - label *app* to be used by selection
+          - ```<basename>```
+    """
+
     options: RabbitMQOptions
     _namespace: str
 
