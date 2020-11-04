@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional, Sequence
 
 from kubragen import KubraGen
 from kubragen.builder import Builder
@@ -168,17 +168,17 @@ class RabbitMQBuilder(Builder):
     def namespace(self):
         return self._namespace
 
-    def build_names(self) -> List[TBuild]:
+    def build_names(self) -> Sequence[TBuild]:
         return [self.BUILD_ACCESSCONTROL, self.BUILD_CONFIG, self.BUILD_SERVICE]
 
-    def build_names_required(self) -> List[TBuild]:
+    def build_names_required(self) -> Sequence[TBuild]:
         ret = [self.BUILD_CONFIG, self.BUILD_SERVICE]
         if self.option_get('config.authorization.serviceaccount_create') is not False or \
                 self.option_get('config.authorization.roles_create') is not False:
             ret.append(self.BUILD_ACCESSCONTROL)
         return ret
 
-    def builditem_names(self) -> List[TBuildItem]:
+    def builditem_names(self) -> Sequence[TBuildItem]:
         return [
             self.BUILDITEM_SERVICE_ACCOUNT,
             self.BUILDITEM_ROLE,
@@ -190,7 +190,7 @@ class RabbitMQBuilder(Builder):
             self.BUILDITEM_SERVICE,
         ]
 
-    def internal_build(self, buildname: TBuild) -> List[ObjectItem]:
+    def internal_build(self, buildname: TBuild) -> Sequence[ObjectItem]:
         if buildname == self.BUILD_ACCESSCONTROL:
             return self.internal_build_accesscontrol()
         elif buildname == self.BUILD_CONFIG:
@@ -200,7 +200,7 @@ class RabbitMQBuilder(Builder):
         else:
             raise InvalidNameError('Invalid build name: "{}"'.format(buildname))
 
-    def internal_build_accesscontrol(self) -> List[ObjectItem]:
+    def internal_build_accesscontrol(self) -> Sequence[ObjectItem]:
         ret = []
 
         if self.option_get('config.authorization.serviceaccount_create') is not False:
@@ -252,7 +252,7 @@ class RabbitMQBuilder(Builder):
 
         return ret
 
-    def internal_build_config(self) -> List[ObjectItem]:
+    def internal_build_config(self) -> Sequence[ObjectItem]:
         ret = [Object({
             'apiVersion': 'v1',
             'kind': 'ConfigMap',
@@ -294,7 +294,7 @@ class RabbitMQBuilder(Builder):
 
         return ret
 
-    def internal_build_service(self) -> List[ObjectItem]:
+    def internal_build_service(self) -> Sequence[ObjectItem]:
         ret = []
         ret.extend([Object({
             'apiVersion': 'v1',
