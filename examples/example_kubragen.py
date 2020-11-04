@@ -63,9 +63,9 @@ shell_script.append(OD_FileTemplate(f'kubectl apply -f ${{FILE_{file.fileid}}}')
 shell_script.append(f'kubectl config set-context --current --namespace=app-default')
 
 #
-# SETUP: rabbitmq-config.yaml
+# SETUP: rabbitmq
 #
-kg_rabbit = RabbitMQBuilder(kubragen=kg, options=RabbitMQOptions({
+rabbitmq_config = RabbitMQBuilder(kubragen=kg, options=RabbitMQOptions({
     'namespace': OptionRoot('namespaces.monitoring'),
     'basename': 'myrabbit',
     'config': {
@@ -106,8 +106,8 @@ kg_rabbit = RabbitMQBuilder(kubragen=kg, options=RabbitMQOptions({
     ]),
 ])
 
-kg_rabbit.ensure_build_names(kg_rabbit.BUILD_ACCESSCONTROL, kg_rabbit.BUILD_CONFIG,
-                             kg_rabbit.BUILD_SERVICE)
+rabbitmq_config.ensure_build_names(rabbitmq_config.BUILD_ACCESSCONTROL, rabbitmq_config.BUILD_CONFIG,
+                                   rabbitmq_config.BUILD_SERVICE)
 
 #
 # OUTPUTFILE: rabbitmq-config.yaml
@@ -115,7 +115,7 @@ kg_rabbit.ensure_build_names(kg_rabbit.BUILD_ACCESSCONTROL, kg_rabbit.BUILD_CONF
 file = OutputFile_Kubernetes('rabbitmq-config.yaml')
 out.append(file)
 
-file.append(kg_rabbit.build(kg_rabbit.BUILD_ACCESSCONTROL, kg_rabbit.BUILD_CONFIG))
+file.append(rabbitmq_config.build(rabbitmq_config.BUILD_ACCESSCONTROL, rabbitmq_config.BUILD_CONFIG))
 
 shell_script.append(OD_FileTemplate(f'kubectl apply -f ${{FILE_{file.fileid}}}'))
 
@@ -125,7 +125,7 @@ shell_script.append(OD_FileTemplate(f'kubectl apply -f ${{FILE_{file.fileid}}}')
 file = OutputFile_Kubernetes('rabbitmq.yaml')
 out.append(file)
 
-file.append(kg_rabbit.build(kg_rabbit.BUILD_SERVICE))
+file.append(rabbitmq_config.build(rabbitmq_config.BUILD_SERVICE))
 
 shell_script.append(OD_FileTemplate(f'kubectl apply -f ${{FILE_{file.fileid}}}'))
 
