@@ -33,7 +33,7 @@ class RabbitMQOptions(Options):
           - ```['rabbitmq_peer_discovery_k8s']```
         * - config |rarr| rabbitmq_conf
           - rabbitmq.conf file
-          - :class:`kubragen.configfile.ConfigFile`
+          - str, :class:`kubragen.configfile.ConfigFile`
           - :class:`kg_rabbitmq.RabbitMQConfigFile`
         * - config |rarr| erlang_cookie
           - erlang cookie
@@ -99,7 +99,7 @@ class RabbitMQOptions(Options):
             'namespace': OptionDef(required=True, default_value='rabbitmq', allowed_types=[str]),
             'config': {
                 'enabled_plugins': OptionDef(default_value=['rabbitmq_peer_discovery_k8s'], allowed_types=[Sequence]),
-                'rabbitmq_conf': OptionDef(allowed_types=[ConfigFile]),
+                'rabbitmq_conf': OptionDef(allowed_types=[str, ConfigFile]),
                 'erlang_cookie': OptionDef(required=True, default_value=str(uuid.uuid4()),
                                            format=OptionDefFormat.KDATA_VOLUME,
                                            allowed_types=[str, dict, KData_Secret]),

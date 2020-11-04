@@ -92,8 +92,7 @@ class RabbitMQBuilder(Builder):
     """
 
     options: RabbitMQOptions
-    configfile: ConfigFile
-    configfilerender: ConfigFileRender
+    configfile: Optional[str]
     _namespace: str
 
     SOURCE_NAME = 'kg_rabbitmq'
@@ -116,15 +115,9 @@ class RabbitMQBuilder(Builder):
         if options is None:
             options = RabbitMQOptions()
         self.options = options
+        self.configfile = None
 
         self._namespace = self.option_get('namespace')
-        self.configfile = self.option_get('config.rabbitmq_conf')
-        if self.configfile is None:
-            self.configfile = RabbitMQConfigFile()
-        self.configfilerender = ConfigFileRenderMulti([
-            ConfigFileRender_SysCtl(),
-            ConfigFileRender_RawStr()
-        ])
 
         if self.option_get('config.authorization.serviceaccount_create') is not False:
             serviceaccount_name = self.basename()
@@ -161,6 +154,21 @@ class RabbitMQBuilder(Builder):
 
     def option_get(self, name: str):
         return self.kubragen.option_root_get(self.options, name)
+
+    def configfile_get(self) -> str:
+        if self.configfile is None:
+            configfile = self.option_get('config.rabbitmq_conf')
+            if configfile is None:
+                configfile = RabbitMQConfigFile()
+            if isinstance(configfile, str):
+                self.configfile = configfile
+            else:
+                configfilerender = ConfigFileRenderMulti([
+                    ConfigFileRender_SysCtl(),
+                    ConfigFileRender_RawStr()
+                ])
+                self.configfile = configfilerender.render(configfile.get_value(self))
+        return self.configfile
 
     def basename(self, suffix: str = ''):
         return '{}{}'.format(self.option_get('basename'), suffix)
@@ -262,9 +270,7 @@ class RabbitMQBuilder(Builder):
             },
             'data': {
                 'enabled_plugins': LiteralStr('[{}].'.format(', '.join(self.option_get('config.enabled_plugins')))),
-                # 'rabbitmq.conf': LiteralStr(self.file_rabbitmq_conf())
-                # 'rabbitmq.conf': LiteralStr(self.configfile.get_value(self))
-                'rabbitmq.conf': LiteralStr(self.configfilerender.render(self.configfile.get_value(self))),
+                'rabbitmq.conf': LiteralStr(self.configfile_get()),
             }
         }, name=self.BUILDITEM_CONFIG, source=self.SOURCE_NAME, instance=self.basename())]
 
