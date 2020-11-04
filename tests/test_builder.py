@@ -1,7 +1,7 @@
 import unittest
 
 from kubragen import KubraGen
-from kubragen.jsonpatch import JSONPatches_Apply, FilterJSONPatches_Apply, ObjectFilter, FilterJSONPatch
+from kubragen.jsonpatch import FilterJSONPatches_Apply, ObjectFilter, FilterJSONPatch
 from kubragen.provider import Provider_Generic
 
 from kg_rabbitmq import RabbitMQBuilder, RabbitMQOptions
