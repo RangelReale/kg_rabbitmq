@@ -1,5 +1,5 @@
 import uuid
-from typing import Sequence
+from typing import Sequence, Optional, Any
 
 from kubragen.kdata import KData_Secret
 from kubragen.kdatahelper import KDataHelper_Volume
@@ -8,14 +8,48 @@ from kubragen.options import Options
 
 
 class RabbitMQOptions(Options):
-    def define_options(self):
+    """
+    Options for the RabbitMQ builder.
+
+    .. list-table::
+       :header-rows: 1
+
+       * - option
+         - description
+         - allowed types
+         - default value
+       * - basename
+         - object names prefix
+         - str
+         - ```rabbitmq```
+       * - namespace
+         - namespace
+         - str
+         - ```rabbitmq```
+       * - config.enabled_plugins
+         - enabled plugins
+         - Sequence
+         - ```['rabbitmq_peer_discovery_k8s']```
+       * - config.rabbitmq_conf_extra
+         - append to rabbitmq.conf
+         - str
+         -
+       * - config.erlang_cookie
+         - erlang cookie
+         - str, dict, :class:`KData_Secret`
+         - ```uuid.uuid4()```
+    """
+    def define_options(self) -> Optional[Any]:
+        """
+        Declare the options for the RabbitMQ builder.
+
+        :return: The supported options
+        """
         return {
             'basename': OptionDef(required=True, default_value='rabbitmq', allowed_types=[str]),
             'namespace': OptionDef(required=True, default_value='rabbitmq', allowed_types=[str]),
             'config': {
-                'enabled_plugins': OptionDef(
-                    default_value=['rabbitmq_peer_discovery_k8s', 'rabbitmq_management', 'rabbitmq_prometheus'],
-                    allowed_types=[Sequence]),
+                'enabled_plugins': OptionDef(default_value=['rabbitmq_peer_discovery_k8s'], allowed_types=[Sequence]),
                 'rabbitmq_conf_extra': OptionDef(allowed_types=[str]),
                 'erlang_cookie': OptionDef(required=True, default_value=str(uuid.uuid4()),
                                            format=OptionDefFormat.KDATA_VOLUME,
