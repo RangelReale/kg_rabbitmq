@@ -426,7 +426,7 @@ class RabbitMQBuilder(Builder):
                             },
                             KDataHelper_Volume.info(base_value={
                                 'name': 'rabbitmq-config-erlang-cookie',
-                            }, value=self.option_get('config.erlang_cookie'), default_value={
+                            }, kdata_value=self.option_get('config.erlang_cookie'), default_value={
                                 'secret': {
                                     'secretName': self.object_name('config-secret'),
                                     'items': [{
