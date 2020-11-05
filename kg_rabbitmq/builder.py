@@ -90,7 +90,6 @@ class RabbitMQBuilder(Builder):
           - label *app* to be used by selection
           - ```<basename>```
     """
-
     options: RabbitMQOptions
     configfile: Optional[str]
     _namespace: str
