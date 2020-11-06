@@ -2,7 +2,7 @@ from typing import Optional, Sequence
 
 from kubragen import KubraGen
 from kubragen.builder import Builder
-from kubragen.configfile import ConfigFile, ConfigFileRender, ConfigFileRenderMulti, ConfigFileRender_SysCtl, \
+from kubragen.configfile import ConfigFileRenderMulti, ConfigFileRender_SysCtl, \
     ConfigFileRender_RawStr
 from kubragen.data import ValueData
 from kubragen.exception import InvalidParamError, InvalidNameError
