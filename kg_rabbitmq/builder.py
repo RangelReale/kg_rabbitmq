@@ -90,7 +90,6 @@ class RabbitMQBuilder(Builder):
           - label *app* to be used by selection
           - ```<basename>```
     """
-
     options: RabbitMQOptions
     configfile: Optional[str]
     _namespace: str
@@ -427,7 +426,7 @@ class RabbitMQBuilder(Builder):
                             },
                             KDataHelper_Volume.info(base_value={
                                 'name': 'rabbitmq-config-erlang-cookie',
-                            }, kdata=self.option_get('config.erlang_cookie'), default_value={
+                            }, kdata_value=self.option_get('config.erlang_cookie'), default_value={
                                 'secret': {
                                     'secretName': self.object_name('config-secret'),
                                     'items': [{
@@ -438,7 +437,7 @@ class RabbitMQBuilder(Builder):
                             }, key_path='erlang_cookie'),
                             KDataHelper_Volume.info(base_value={
                                 'name': 'rabbitmq-config-load-definition',
-                            }, kdata=self.option_get('config.load_definitions'), default_value={
+                            }, kdata_value=self.option_get('config.load_definitions'), default_value={
                                 'secret': {
                                     'secretName': self.object_name('config-secret'),
                                     'items': [{
@@ -450,7 +449,7 @@ class RabbitMQBuilder(Builder):
                                 enabled=self.option_get('config.load_definitions') is not None),
                             KDataHelper_Volume.info(base_value={
                                 'name': 'rabbitmq-data',
-                            }, kdata=self.option_get('kubernetes.volumes.data')),
+                            }, value=self.option_get('kubernetes.volumes.data')),
                         ],
                         'serviceAccountName': ValueData(value=self.object_name('service-account'),
                                                         enabled=self.object_name('service-account') is not None),
