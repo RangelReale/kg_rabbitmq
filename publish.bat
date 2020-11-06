@@ -17,7 +17,7 @@ if errorlevel 1 goto error
 rmdir /s/q dist
 if errorlevel 1 goto error
 
-python setup.py test
+python -m unittest
 if errorlevel 1 goto error
 
 python setup.py sdist bdist_wheel
