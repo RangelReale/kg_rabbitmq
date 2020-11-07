@@ -18,15 +18,15 @@ class RabbitMQConfigFileOptions(Options):
           - description
           - allowed types
           - default value
-        * - enable.log_level
+        * - enable |rarr| log_level
           - set log level on config file
           - bool
           - ```True```
-        * - enable.cluster_formation
+        * - enable |rarr| cluster_formation
           - set cluster formation on config file
           - bool
           - ```True```
-        * - config.extra_config
+        * - config |rarr| extra_config
           - extra config to add fo config file
           - Mapping
           - ```{}```
