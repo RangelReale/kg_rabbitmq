@@ -2,7 +2,7 @@ from typing import Optional, Sequence
 
 from kubragen import KubraGen
 from kubragen.builder import Builder
-from kubragen.configfile import ConfigFile, ConfigFileRender, ConfigFileRenderMulti, ConfigFileRender_SysCtl, \
+from kubragen.configfile import ConfigFileRenderMulti, ConfigFileRender_SysCtl, \
     ConfigFileRender_RawStr
 from kubragen.data import ValueData
 from kubragen.exception import InvalidParamError, InvalidNameError
@@ -426,7 +426,7 @@ class RabbitMQBuilder(Builder):
                             },
                             KDataHelper_Volume.info(base_value={
                                 'name': 'rabbitmq-config-erlang-cookie',
-                            }, kdata_value=self.option_get('config.erlang_cookie'), default_value={
+                            }, value_if_kdata=self.option_get('config.erlang_cookie'), default_value={
                                 'secret': {
                                     'secretName': self.object_name('config-secret'),
                                     'items': [{
@@ -437,7 +437,7 @@ class RabbitMQBuilder(Builder):
                             }, key_path='erlang_cookie'),
                             KDataHelper_Volume.info(base_value={
                                 'name': 'rabbitmq-config-load-definition',
-                            }, kdata_value=self.option_get('config.load_definitions'), default_value={
+                            }, value_if_kdata=self.option_get('config.load_definitions'), default_value={
                                 'secret': {
                                     'secretName': self.object_name('config-secret'),
                                     'items': [{
