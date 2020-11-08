@@ -139,7 +139,7 @@ class RabbitMQBuilder(Builder):
         else:
             rolebinding_name = None
 
-        self.object_names_update({
+        self.object_names_init({
             'config': self.basename('-config'),
             'config-secret': self.basename('-config-secret'),
             'service-headless': self.basename('-headless'),
