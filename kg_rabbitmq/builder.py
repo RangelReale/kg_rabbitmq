@@ -96,18 +96,18 @@ class RabbitMQBuilder(Builder):
 
     SOURCE_NAME = 'kg_rabbitmq'
 
-    BUILD_ACCESSCONTROL: TBuild = 'accesscontrol'
-    BUILD_CONFIG: TBuild = 'config'
-    BUILD_SERVICE: TBuild = 'service'
+    BUILD_ACCESSCONTROL = TBuild('accesscontrol')
+    BUILD_CONFIG = TBuild('config')
+    BUILD_SERVICE = TBuild('service')
 
-    BUILDITEM_SERVICE_ACCOUNT: TBuildItem = 'service-account'
-    BUILDITEM_ROLE: TBuildItem = 'role'
-    BUILDITEM_ROLE_BINDING: TBuildItem = 'role-binding'
-    BUILDITEM_CONFIG: TBuildItem = 'config'
-    BUILDITEM_CONFIG_SECRET: TBuildItem = 'config-secret'
-    BUILDITEM_SERVICE_HEADLESS: TBuildItem = 'service-headless'
-    BUILDITEM_STATEFULSET: TBuildItem = 'statefulset'
-    BUILDITEM_SERVICE: TBuildItem = 'service'
+    BUILDITEM_SERVICE_ACCOUNT = TBuildItem('service-account')
+    BUILDITEM_ROLE = TBuildItem('role')
+    BUILDITEM_ROLE_BINDING = TBuildItem('role-binding')
+    BUILDITEM_CONFIG = TBuildItem('config')
+    BUILDITEM_CONFIG_SECRET = TBuildItem('config-secret')
+    BUILDITEM_SERVICE_HEADLESS = TBuildItem('service-headless')
+    BUILDITEM_STATEFULSET = TBuildItem('statefulset')
+    BUILDITEM_SERVICE = TBuildItem('service')
 
     def __init__(self, kubragen: KubraGen, options: Optional[RabbitMQOptions] = None):
         super().__init__(kubragen)
